@@ -22,7 +22,7 @@ Projeto objetivas aplicar os conhecimentos básicos de React obtidos no bootcamp
 Foram utilizadas HTML, CSS, JS e o framework React
 
 **Página do Github**
-Caso queira checar mais, veja: http://localhost:3000/around-react_ptbr
+Caso queira checar mais, veja: https://pedronicolela95.github.io/around-react_ptbr/
 
 **Imagens**
 
