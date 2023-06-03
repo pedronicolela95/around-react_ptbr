@@ -13,7 +13,7 @@ function PopupWithForm(props) {
         id={props.name}
       >
         <div className="popup__overlay" onClick={props.closeFunction}></div>
-        <form className="popup__form">
+        <form className="popup__form" onSubmit={props.onSubmit}>
           <button onClick={props.closeFunction}>
             <img
               className="popup__close-button"

@@ -6,8 +6,12 @@ import editImageButton from "../images/profile/edit-picture.svg";
 import Card from "./Card";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
+import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
 
 import api from "./Api";
+
+import { CurrentUserContext } from "../context/CurrentUserContext";
 
 function Main(props) {
   const {
@@ -21,32 +25,41 @@ function Main(props) {
     isImagePopupOpen,
     handleCardClick,
     selectedCard,
+    handleUpdateUser,
+    handleUpdateAvatar,
   } = props;
 
-  const [userName, setUserName] = React.useState("");
-  const [userDescription, setUserDescription] = React.useState("");
-  const [userAvatar, setUserAvatar] = React.useState("");
-  const [userId, setUserId] = React.useState("");
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
     api
-      .getProfileInfo()
+      .getInitialCards()
       .then((res) => {
-        setUserName(res.name);
-        setUserDescription(res.about);
-        setUserAvatar(res.avatar);
-        setUserId(res._id);
-
-        return api.getInitialCards().then((res) => {
-          setCards(res);
-        });
+        setCards(res);
       })
-
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
+  const currentUser = React.useContext(CurrentUserContext);
+
+  function handleCardLike(card) {
+    // Verifique mais uma vez se esse cartão já foi curtido
+    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+
+    // Envie uma solicitação para a API e obtenha os dados do cartão atualizados
+    api.likeCard(card._id, isLiked).then((newCard) => {
+      setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
+    });
+  }
+
+  function handleDeleteCard(card) {
+    // Envie uma solicitação para a API e obtenha os dados do cartão atualizados
+    api.deleteCard(card._id).then(() => {
+      setCards((state) => state.filter((c) => c._id !== card._id));
+    });
+  }
 
   return (
     <>
@@ -61,12 +74,12 @@ function Main(props) {
           <img
             className="profile__picture"
             alt="User profile"
-            src={userAvatar}
+            src={currentUser.avatar}
           />
         </div>
         <div className="profile__info">
-          <h3 className="profile__name">{userName}</h3>
-          <h5 className="profile__about-me">{userDescription}</h5>
+          <h3 className="profile__name">{currentUser.name}</h3>
+          <h5 className="profile__about-me">{currentUser.about}</h5>
           <button onClick={handleEditProfileClick}>
             <img
               className="profile__edit-button"
@@ -87,56 +100,25 @@ function Main(props) {
         {cards.map((item) => (
           <Card
             key={item._id}
-            name={item.name}
-            link={item.link}
-            isOwned={item.owner._id === userId}
-            likeNumber={item.likes.length}
+            card={item}
             onCardClick={handleCardClick}
+            onCardLike={handleCardLike}
+            onCardDelete={handleDeleteCard}
           />
         ))}
       </ul>
 
-      <PopupWithForm
-        name="profile-form"
-        title="Editar Perfil"
+      <EditProfilePopup
         isOpen={isEditProfilePopupOpen}
-        closeFunction={closeAllPopups}
-      >
-        <input
-          className="popup__input"
-          id="name-input"
-          placeholder="Nome"
-          required
-          minLength="2"
-          maxLength="40"
-        />
-        <span className="popup__error name-input-error"></span>
-        <input
-          className="popup__input"
-          id="about-me-input"
-          placeholder="Sobre mim"
-          required
-          minLength="2"
-          maxLength="200"
-        />
-        <span className="popup__error about-me-input-error"></span>
-      </PopupWithForm>
+        onClose={closeAllPopups}
+        onUpdateUser={handleUpdateUser}
+      ></EditProfilePopup>
 
-      <PopupWithForm
-        name="profile-image"
-        title="Alterar a foto do perfil"
+      <EditAvatarPopup
         isOpen={isEditAvatarPopupOpen}
-        closeFunction={closeAllPopups}
-      >
-        <input
-          className="popup__input"
-          id="image-input"
-          placeholder="Link da imagem"
-          type="url"
-          required
-        />
-        <span className="popup__error image-input-error"></span>
-      </PopupWithForm>
+        onClose={closeAllPopups}
+        onUpdateAvatar={handleUpdateAvatar}
+      ></EditAvatarPopup>
 
       <PopupWithForm
         name="place-form"

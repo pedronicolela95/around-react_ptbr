@@ -48,6 +48,7 @@ class Api {
     const method = isLikedByUser ? "DELETE" : "PUT";
     const url = this.baseUrl + "/cards/likes/" + cardId;
     const data = { headers: this.headers, method: method };
+    console.log(data);
     return fetch(url, data).then((res) => {
       if (res.ok) {
         return res.json();
@@ -91,7 +92,8 @@ class Api {
   }
 
   updateProfileImage(profileLink) {
-    const url = this.baseUrl + "/users/me/avatar ";
+    const url = this.baseUrl + "/users/me/avatar";
+    console.log(profileLink);
     const data = {
       headers: this.headers,
       method: "PATCH",
