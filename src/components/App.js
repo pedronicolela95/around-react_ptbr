@@ -2,8 +2,8 @@ import React from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import api from "./Api";
-import { CurrentUserContext } from "../context/CurrentUserContext";
+import api from "../utils/Api";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] =

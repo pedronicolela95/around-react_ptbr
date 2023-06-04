@@ -2,7 +2,7 @@ import React from "react";
 import deleteButtonImg from "../images/posts/delete-button.svg";
 import loveButton from "../images/posts/love-button.svg";
 
-import { CurrentUserContext } from "../context/CurrentUserContext";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function Card(props) {
   const currentUser = React.useContext(CurrentUserContext);
