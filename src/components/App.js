@@ -2,19 +2,8 @@ import React from "react";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import Api from "../utils/api";
+import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-
-const apiToken = "30daf07f-92e8-4bf2-9f92-48f8d54dd26d";
-const groupId = "web_ptbr_cohort_03";
-
-const api = new Api({
-  baseUrl: "https://around.nomoreparties.co/v1/" + groupId,
-  headers: {
-    authorization: apiToken,
-    "Content-Type": "application/json",
-  },
-});
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] =
