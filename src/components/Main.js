@@ -8,6 +8,7 @@ import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
+import AddPlacePopup from "./AddPlacePopup";
 
 import { CurrentUserContext } from "../context/CurrentUserContext";
 
@@ -28,6 +29,7 @@ function Main(props) {
     cards,
     onCardLike,
     onCardDelete,
+    handleAddNewCard,
   } = props;
 
   const currentUser = React.useContext(CurrentUserContext);
@@ -91,30 +93,12 @@ function Main(props) {
         onUpdateAvatar={handleUpdateAvatar}
       ></EditAvatarPopup>
 
-      <PopupWithForm
-        name="place-form"
-        title="Novo local"
+      <AddPlacePopup
         isOpen={isAddPlacePopupOpen}
-        closeFunction={closeAllPopups}
-      >
-        <input
-          className="popup__input"
-          id="title-input"
-          placeholder="Título"
-          required
-          minLength="2"
-          maxLength="30"
-        />
-        <span className="popup__error title-input-error"></span>
-        <input
-          className="popup__input"
-          type="url"
-          id="image-link-input"
-          placeholder="Link da imagem"
-          required
-        />
-        <span className="popup__error image-link-input-error"></span>
-      </PopupWithForm>
+        onClose={closeAllPopups}
+        onAddNewCard={handleAddNewCard}
+      ></AddPlacePopup>
+
       <PopupWithForm
         name="delete-form"
         title="Tem certeza?"
@@ -123,7 +107,7 @@ function Main(props) {
       <ImagePopup
         name="image-zoom"
         isOpen={isImagePopupOpen}
-        closeFunction={closeAllPopups}
+        onClose={closeAllPopups}
         selectedCard={selectedCard}
       ></ImagePopup>
     </>

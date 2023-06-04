@@ -99,6 +99,18 @@ function App() {
     });
   }
 
+  function handleAddNewCard(card) {
+    // Envie uma solicitação para a API e obtenha os dados do cartão atualizados
+    api
+      .postCards(card)
+      .then((newCard) => {
+        setCards([newCard, ...cards]);
+      })
+      .then(() => {
+        closeAllPopups();
+      });
+  }
+
   return (
     <>
       <CurrentUserContext.Provider value={currentUser}>
@@ -119,6 +131,7 @@ function App() {
           cards={cards}
           onCardLike={handleCardLike}
           onCardDelete={handleDeleteCard}
+          handleAddNewCard={handleAddNewCard}
         />
         <Footer />
       </CurrentUserContext.Provider>
