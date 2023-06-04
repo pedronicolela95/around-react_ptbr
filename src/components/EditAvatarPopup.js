@@ -19,7 +19,7 @@ function EditAvatarPopup(props) {
     <>
       <PopupWithForm
         isOpen={isOpen}
-        closeFunction={onClose}
+        onClose={onClose}
         name="profile-image"
         title="Alterar a foto do perfil"
         onSubmit={handleSubmit}

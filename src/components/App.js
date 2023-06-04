@@ -13,6 +13,7 @@ function App() {
   const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState("");
   const [currentUser, setCurrentUser] = React.useState("");
+  const [cards, setCards] = React.useState([]);
 
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(true);
@@ -44,6 +45,9 @@ function App() {
       .getProfileInfo()
       .then((res) => {
         setCurrentUser(res);
+        return api.getInitialCards().then((res) => {
+          setCards(res);
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -78,6 +82,23 @@ function App() {
       });
   }
 
+  function handleCardLike(card) {
+    // Verifique mais uma vez se esse cartão já foi curtido
+    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+
+    // Envie uma solicitação para a API e obtenha os dados do cartão atualizados
+    api.likeCard(card._id, isLiked).then((newCard) => {
+      setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
+    });
+  }
+
+  function handleDeleteCard(card) {
+    // Envie uma solicitação para a API e obtenha os dados do cartão atualizados
+    api.deleteCard(card._id).then(() => {
+      setCards((state) => state.filter((c) => c._id !== card._id));
+    });
+  }
+
   return (
     <>
       <CurrentUserContext.Provider value={currentUser}>
@@ -95,6 +116,9 @@ function App() {
           selectedCard={selectedCard}
           handleUpdateUser={handleUpdateUser}
           handleUpdateAvatar={handleUpdateAvatar}
+          cards={cards}
+          onCardLike={handleCardLike}
+          onCardDelete={handleDeleteCard}
         />
         <Footer />
       </CurrentUserContext.Provider>

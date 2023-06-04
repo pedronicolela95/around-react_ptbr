@@ -1,12 +1,11 @@
 import closeIconImg from "../images/popup/close-icon.svg";
 
 function ImagePopup(props) {
-  let isOpen = props.isOpen;
   return (
     <>
       <div
         className={
-          isOpen
+          props.isOpen
             ? `popup popup__active popup_type_${props.name}`
             : `popup popup_type_${props.name}`
         }
