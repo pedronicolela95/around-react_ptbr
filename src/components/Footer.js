@@ -1,10 +1,8 @@
 function Footer() {
   return (
-    <>
-      <footer className="footer">
-        <p className="footer__author">© 2023 Around The U.S.</p>
-      </footer>
-    </>
+    <footer className="footer">
+      <p className="footer__author">© 2023 Around The U.S.</p>
+    </footer>
   );
 }
 

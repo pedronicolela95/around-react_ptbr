@@ -45,9 +45,17 @@ function App() {
       .getProfileInfo()
       .then((res) => {
         setCurrentUser(res);
-        return api.getInitialCards().then((res) => {
-          setCards(res);
-        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  React.useEffect(() => {
+    api
+      .getInitialCards()
+      .then((res) => {
+        setCards(res);
       })
       .catch((err) => {
         console.log(err);
@@ -59,8 +67,6 @@ function App() {
       .updateProfileInfo(profileInfo)
       .then((res) => {
         setCurrentUser(res);
-      })
-      .then(() => {
         closeAllPopups();
       })
       .catch((err) => {
@@ -73,8 +79,6 @@ function App() {
       .updateProfileImage(profileInfo)
       .then((res) => {
         setCurrentUser(res);
-      })
-      .then(() => {
         closeAllPopups();
       })
       .catch((err) => {
@@ -105,37 +109,36 @@ function App() {
       .postCards(card)
       .then((newCard) => {
         setCards([newCard, ...cards]);
-      })
-      .then(() => {
         closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }
 
   return (
-    <>
-      <CurrentUserContext.Provider value={currentUser}>
-        <Header />
-        <Main
-          isEditProfilePopupOpen={isEditProfilePopupOpen}
-          isAddPlacePopupOpen={isAddPlacePopupOpen}
-          isEditAvatarPopupOpen={isEditAvatarPopupOpen}
-          handleEditAvatarClick={handleEditAvatarClick}
-          handleEditProfileClick={handleEditProfileClick}
-          handleAddPlaceClick={handleAddPlaceClick}
-          closeAllPopups={closeAllPopups}
-          isImagePopupOpen={isImagePopupOpen}
-          handleCardClick={handleCardClick}
-          selectedCard={selectedCard}
-          handleUpdateUser={handleUpdateUser}
-          handleUpdateAvatar={handleUpdateAvatar}
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleDeleteCard}
-          handleAddNewCard={handleAddNewCard}
-        />
-        <Footer />
-      </CurrentUserContext.Provider>
-    </>
+    <CurrentUserContext.Provider value={currentUser}>
+      <Header />
+      <Main
+        isEditProfilePopupOpen={isEditProfilePopupOpen}
+        isAddPlacePopupOpen={isAddPlacePopupOpen}
+        isEditAvatarPopupOpen={isEditAvatarPopupOpen}
+        handleEditAvatarClick={handleEditAvatarClick}
+        handleEditProfileClick={handleEditProfileClick}
+        handleAddPlaceClick={handleAddPlaceClick}
+        closeAllPopups={closeAllPopups}
+        isImagePopupOpen={isImagePopupOpen}
+        handleCardClick={handleCardClick}
+        selectedCard={selectedCard}
+        handleUpdateUser={handleUpdateUser}
+        handleUpdateAvatar={handleUpdateAvatar}
+        cards={cards}
+        onCardLike={handleCardLike}
+        onCardDelete={handleDeleteCard}
+        handleAddNewCard={handleAddNewCard}
+      />
+      <Footer />
+    </CurrentUserContext.Provider>
   );
 }
 
