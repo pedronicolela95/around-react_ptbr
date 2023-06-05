@@ -1,4 +1,4 @@
-import headerImageImg from "../images/header/__image.svg";
+import headerImageImg from "../images/header/header__image.svg";
 
 function Header() {
   return (
